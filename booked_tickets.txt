@@ -1,0 +1,12 @@
+Seat 1: Rahul Sharma, Age: 22, Email: rahul@gmail.com, Price: 300
+Seat 4: Ananya Singh, Age: 20, Email: ananya@gmail.com, Price: 300
+Seat 6: Karan Patel, Age: 28, Email: karan@gmail.com, Price: 200
+Seat 8: Meera Joshi, Age: 24, Email: meera@gmail.com, Price: 200
+Seat 9: Sandeep Rao, Age: 30, Email: sandeep@gmail.com, Price: 200
+Seat 11: Neha Kapoor, Age: 19, Email: neha@gmail.com, Price: 200
+Seat 13: Priya Mehta, Age: 21, Email: priya@gmail.com, Price: 200
+Seat 15: Arjun Malhotra, Age: 27, Email: arjunm@gmail.com, Price: 200
+Seat 18: Divya Nair, Age: 23, Email: divya@gmail.com, Price: 150
+Seat 20: Rohan Verma, Age: 26, Email: rohan@gmail.com, Price: 150
+Seat 22: Ishita Das, Age: 22, Email: ishita@gmail.com, Price: 150
+Seat 25: Vikram Chauhan, Age: 29, Email: vikram@gmail.com, Price: 150
