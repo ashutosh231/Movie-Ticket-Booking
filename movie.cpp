@@ -234,6 +234,77 @@ void showBookedTickets() {
     line();
     pause();
 }
+// ---------------- SORT BY NAME (TEMP DISPLAY) ----------------
+void sortByName() {
+    header("🔤 Booked Tickets (Sorted by Name)");
+
+    // Count booked tickets
+    int count = 0;
+    for (int i = 0; i < MAX_SEATS; i++) {
+        if (booked[i]) count++;
+    }
+
+    if (count == 0) {
+        cout << "🚫 No tickets booked yet.\n";
+        pause();
+        return;
+    }
+
+    // Temporary arrays for sorting
+    string tempNames[count];
+    int tempAges[count];
+    string tempEmails[count];
+    int tempSeats[count];
+    int tempPrices[count];
+
+    // Copy booked data
+    int idx = 0;
+    for (int i = 0; i < MAX_SEATS; i++) {
+        if (booked[i]) {
+            tempNames[idx] = names[i];
+            tempAges[idx] = ages[i];
+            tempEmails[idx] = emails[i];
+            tempSeats[idx] = i + 1;
+            tempPrices[idx] = seatPrices[i];
+            idx++;
+        }
+    }
+
+    // Bubble Sort by name
+    for (int i = 0; i < count - 1; i++) {
+        for (int j = 0; j < count - i - 1; j++) {
+            if (tempNames[j] > tempNames[j + 1]) {
+                swap(tempNames[j], tempNames[j + 1]);
+                swap(tempAges[j], tempAges[j + 1]);
+                swap(tempEmails[j], tempEmails[j + 1]);
+                swap(tempSeats[j], tempSeats[j + 1]);
+                swap(tempPrices[j], tempPrices[j + 1]);
+            }
+        }
+    }
+
+    // Display sorted list
+    for (int i = 0; i < count; i++) {
+        cout << "\n🎟️ Seat " << tempSeats[i];
+
+        if (tempPrices[i] == 300)
+            cout << "  | 💎 Premium (₹300)";
+        else if (tempPrices[i] == 200)
+            cout << "  | ⭐ Standard (₹200)";
+        else
+            cout << "  | 🎫 Economy (₹150)";
+
+        cout << "\n------------------------------------\n";
+        cout << "👤 Name : " << tempNames[i] << "\n";
+        cout << "🎂 Age  : " << tempAges[i] << "\n";
+        cout << "📧 Email: " << tempEmails[i] << "\n";
+        cout << "💰 Price: ₹" << tempPrices[i] << "\n";
+        cout << "------------------------------------\n";
+    }
+
+    line();
+    pause();
+}
 
 void showSeatStatus() {
     header("🎬  CINEMA HALL SEAT STATUS  🎬");
@@ -267,6 +338,7 @@ void showSeatStatus() {
     cout << "✅ = Available   ❌ = Booked\n";
     pause();
 }
+
 void viewTicket() {
     header("🎟️ View Ticket");
     int seatNo;
@@ -313,6 +385,67 @@ void viewTicket() {
 
     pause();
 }
+
+// ---------------- EXTRA FUNCTIONALITIES ----------------
+void searchByName() {
+    header("🔍 Search by Name");
+    cin.ignore();
+    string name;
+    cout << "Enter name: ";
+    getline(cin, name);
+
+    bool found = false;
+    for (int i = 0; i < MAX_SEATS; i++) {
+        if (booked[i] && names[i] == name) {
+            cout << "✅ Found! " << names[i] << " has Seat " << (i+1) 
+                 << " (₹" << seatPrices[i] << ")\n";
+            found = true;
+        }
+    }
+    if (!found) cout << "🚫 No booking found for " << name << ".\n";
+    pause();
+}
+
+void searchBySeat() {
+    header("🔍 Search by Seat No");
+    int seatNo;
+    cout << "Enter seat number: ";
+    cin >> seatNo;
+
+    if (seatNo < 1 || seatNo > MAX_SEATS || !booked[seatNo-1]) {
+        cout << "🚫 No booking found.\n";
+    } else {
+        cout << "✅ Seat " << seatNo << " booked by " << names[seatNo-1] 
+             << " (₹" << seatPrices[seatNo-1] << ")\n";
+    }
+    pause();
+}
+
+
+
+void showRevenue() {
+    header("💰 Revenue Report");
+    int total = 0, premium=0, standard=0, economy=0;
+    int bookedCount=0;
+
+    for (int i = 0; i < MAX_SEATS; i++) {
+        if (booked[i]) {
+            total += seatPrices[i];
+            bookedCount++;
+            if (seatPrices[i]==300) premium++;
+            else if (seatPrices[i]==200) standard++;
+            else economy++;
+        }
+    }
+
+    cout << "📊 Total Revenue : ₹" << total << "\n";
+    cout << "🎟️ Total Booked : " << bookedCount << "/" << MAX_SEATS << "\n";
+    cout << " 💎 Premium : " << premium << "\n";
+    cout << " ⭐ Standard: " << standard << "\n";
+    cout << " 🎫 Economy : " << economy << "\n";
+    pause();
+}
+
 // ---------------- MAIN ----------------
 int main() {
     setSeatPrices();
@@ -327,9 +460,13 @@ int main() {
         cout << "2️⃣  Cancel Ticket\n";
         cout << "3️⃣  Show Booked Tickets\n";
         cout << "4️⃣  Show Seat Status\n";
-        cout << "5️⃣  View Ticket\n";   // New Option
-        cout << "6️⃣  Save Data\n";
-        cout << "7️⃣  Exit\n";
+        cout << "5️⃣  View Ticket\n";   
+        cout << "6️⃣  Search by Name\n";
+        cout << "7️⃣  Search by Seat No\n";
+        cout << "8️⃣  Sort by Name\n";
+        cout << "9️⃣  Revenue & Stats\n";
+        cout << "🔟  Save Data\n";
+        cout << "0️⃣  Exit\n";
         line();
         cout << "👉 Enter choice: ";
         cin >> choice;
@@ -339,18 +476,25 @@ int main() {
             case 2: cancelTicket(); break;
             case 3: showBookedTickets(); break;
             case 4: showSeatStatus(); break;
-            case 5: viewTicket(); break;   // New Function Call
-            case 6: saveToFile(); 
-                    cout << "💾 Data saved!\n"; 
-                    pause(); 
-                    break;
-            case 7: saveToFile(); 
-                    cout << "👋 Thank you! Enjoy your movie 🎥\n"; 
-                    break;
-            default: cout << "❌ Invalid choice.\n"; pause();
+            case 5: viewTicket(); break;
+            case 6: searchByName(); break;
+            case 7: searchBySeat(); break;
+            case 8: sortByName(); break;
+            case 9: showRevenue(); break;
+            case 10: saveToFile(); cout << "💾 Data saved!\n"; pause(); break;
+            case 0: saveToFile(); cout << "👋 Thank you! Enjoy your movie 🎥\n"; break;
+            default: 
+                if (cin.fail()) {
+                    cout << "❌ Invalid input. Please enter a number.\n";
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                } else {
+                    cout << "❌ Invalid choice.\n";
+                }
+                pause();
         }
 
-    } while (choice != 7);
+    } while (choice != 0);
 
     return 0;
 }
